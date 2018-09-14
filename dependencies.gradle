@@ -1,0 +1,60 @@
+ext {
+    BuildToolsVersion = "27.0.3"
+    MinSdkVersion = 21
+    TargetSdkVersion = 27
+    CompileSdkVersion = 27
+
+    def versions = [
+            androidSupport      : '27.1.1',
+            googlePlay          : '15.0.1',
+            constraintLayout    : '1.1.0',
+            lifecycle           : '1.1.1',
+            room                : '1.0.0',
+            multidex            : '1.0.2',
+            dagger              : '2.15',
+            glide               : '4.7.1',
+            glideTransformers   : '3.0.1',
+            gson                : '2.8.2',
+            timber              : '4.5.1',
+            junit               : '4.12'
+    ]
+
+
+    libs = [
+            daggerCompiler       : "com.google.dagger:dagger-compiler:${versions.dagger}",
+            dagger               : "com.google.dagger:dagger:${versions.dagger}",
+            daggerAndProcessor   : "com.google.dagger:dagger-android-processor:${versions.dagger}",
+            daggerSupport        : "com.google.dagger:dagger-android-support:${versions.dagger}",
+            daggerAndroid        : "com.google.dagger:dagger-android:${versions.dagger}",
+
+            glide                : "com.github.bumptech.glide:glide:${versions.glide}",
+            glideProcessor       : "com.github.bumptech.glide:compiler:${versions.glide}",
+            glideTransformers    : "jp.wasabeef:glide-transformations:${versions.glideTransformers}",
+
+            googlePlay           : "com.google.android.gms:play-services-gcm:${versions.googlePlay}",
+            supportAnnotations   : "com.android.support:support-annotations:${versions.androidSupport}",
+            design               : "com.android.support:design:${versions.androidSupport}",
+            recyclerView         : "com.android.support:recyclerview-v7:${versions.androidSupport}",
+            cardview             : "com.android.support:cardview-v7:${versions.androidSupport}",
+            supportv4            : "com.android.support:support-v4:${versions.androidSupport}",
+            appcompatv7          : "com.android.support:appcompat-v7:${versions.androidSupport}",
+            supportv13           : "com.android.support:support-v13:${versions.androidSupport}",
+            vectorSupport        : "com.android.support:support-vector-drawable:${versions.androidSupport}",
+            constraintLayout     : "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
+            multidex             : "com.android.support:multidex:${versions.multidex}",
+
+            room                 : "android.arch.persistence.room:runtime:${versions.room}",
+            roomProcessor        : "android.arch.persistence.room:compiler:${versions.room}",
+            roomRx               : "android.arch.persistence.room:rxjava2:${versions.room}",
+
+            lifecycle            : "android.arch.lifecycle:runtime:${versions.lifecycle}",
+            lifecycleExtensions  : "android.arch.lifecycle:extensions:${versions.lifecycle}",
+            lifecycleProcessor   : "android.arch.lifecycle:compiler:${versions.lifecycle}",
+
+            gson                 : "com.google.code.gson:gson:${versions.gson}",
+
+            timber               : "com.jakewharton.timber:timber:${versions.timber}",
+
+            junit                : "junit:junit:${versions.junit}"
+    ]
+}
