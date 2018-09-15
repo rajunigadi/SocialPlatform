@@ -3,11 +3,10 @@ package com.raju.socialplatform.di.modules.base
 import android.app.Application
 import android.content.Context
 import com.raju.socialplatform.SocialApp
-import com.raju.socialplatform.dagger.modules.base.ViewModelModule
 import dagger.Module
 import dagger.Provides
 
-@Module(includes = arrayOf(ViewModelModule::class))
+@Module
 class ApplicationModule {
 
     @Provides

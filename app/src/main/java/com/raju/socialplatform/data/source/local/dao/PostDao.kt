@@ -18,5 +18,5 @@ interface PostDao {
     fun update(post: Post)
 
     @Query("SELECT * FROM post ORDER BY id")
-    fun getPosts(): MutableList<Post>
+    fun getPosts(): Flowable<MutableList<Post>>
 }

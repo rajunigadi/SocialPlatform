@@ -1,5 +1,6 @@
 package com.raju.socialplatform.android.fragments.base
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -69,6 +71,13 @@ abstract class BaseFragment constructor(private var layoutId: Int, private var t
             }
         } else {
             Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    protected fun hideKeyboard() {
+        if (activity!!.getCurrentFocus() != null && activity!!.getCurrentFocus()!!.getWindowToken() != null) {
+            val ime = activity!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+            ime!!.hideSoftInputFromWindow(activity!!.getCurrentFocus()!!.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
 

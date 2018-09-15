@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SocialPlatform</string>
+    <string name="post">Post</string>
+    <string name="message">Enter message</string>
+    <string name="enter_description">Enter description</string>
 </resources>

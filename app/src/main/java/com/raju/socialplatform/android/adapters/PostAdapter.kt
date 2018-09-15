@@ -1,16 +1,75 @@
 package com.raju.socialplatform.android.adapters
 
-import com.raju.socialplatform.android.adapters.delegate.base.AdapterDelegate
-import com.raju.socialplatform.android.adapters.delegate.base.DelegatingListAdapter
-import com.raju.socialplatform.android.adapters.delegate.base.ListAdapterDelegate
-import com.raju.socialplatform.data.model.base.ListItem
-import com.raju.socialplatform.ui.adapters.delegate.match.PostDelegate
-import javax.inject.Inject
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
+import android.view.ViewGroup
+import android.widget.TextView
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageView
+import butterknife.BindView
+import butterknife.ButterKnife
+import com.raju.socialplatform.R
+import com.raju.socialplatform.android.fragments.NewPostFragment
+import com.raju.socialplatform.android.fragments.PostDetailFragment
+import com.raju.socialplatform.data.model.Post
+import com.raju.socialplatform.utilities.Constants
+import com.raju.socialplatform.utilities.ImageUtil
 
-class PostAdapter @Inject internal constructor() : DelegatingListAdapter<ListItem>() {
+class PostAdapter(private val activity: AppCompatActivity, private val posts: MutableList<Post>):RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
 
-    override fun createDelegates(): Array<AdapterDelegate<MutableList<ListItem>>> {
-        val delegate: ListAdapterDelegate<ListItem> = clickable(PostDelegate() as ListAdapterDelegate<ListItem>)
-        return arrayOf(delegate)
+    inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        @BindView(R.id.iv_avatar)
+        lateinit var ivAvatar: ImageView
+
+        @BindView(R.id.iv_image)
+        lateinit var ivImage: ImageView
+
+        @BindView(R.id.tv_name)
+        lateinit var tvName: TextView
+
+        @BindView(R.id.tv_message)
+        lateinit var tvMessage: TextView
+
+        @BindView(R.id.tv_description)
+        lateinit var tvDescription: TextView
+
+        @BindView(R.id.tv_comments)
+        lateinit var tvComments: TextView
+
+        init {
+            ButterKnife.bind(this, view)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_post_item, parent, false)
+        return MyViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val post = posts[position]
+        holder.tvName.text = post.name
+        holder.tvMessage.text = post.message
+        holder.tvDescription.text = post.description
+        ImageUtil.loadProfileImage(Constants.PROFILE, holder.ivAvatar)
+        ImageUtil.loadImage(Constants.IMAGE, holder.ivImage)
+
+        holder.itemView.setOnClickListener(View.OnClickListener {
+            val ft = activity!!.supportFragmentManager.beginTransaction()
+            var fragment = PostDetailFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(Constants.KEY_POST, post)
+            fragment.arguments = bundle
+            ft.replace(R.id.fragment_container, fragment)
+            ft.addToBackStack(null)
+            ft.commit()
+        })
+    }
+
+    override fun getItemCount(): Int {
+        return posts.size
     }
 }

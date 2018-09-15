@@ -3,6 +3,7 @@ package com.raju.socialplatform.android.fragments
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
@@ -10,19 +11,17 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import butterknife.BindView
+import butterknife.OnClick
 import com.raju.socialplatform.R
 import com.raju.socialplatform.android.adapters.PostAdapter
-import com.raju.socialplatform.android.adapters.delegate.base.ClickableItemTarget
-import com.raju.socialplatform.android.adapters.delegate.base.ItemClickListener
 import com.raju.socialplatform.android.fragments.base.BaseFragment
 import com.raju.socialplatform.android.viewmodel.PostViewModel
 import com.raju.socialplatform.data.model.Post
-import com.raju.socialplatform.data.model.base.ListItem
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
 
-class PostFragment: BaseFragment(R.layout.fragment_post, "Post"), ItemClickListener<Post> {
+class PostFragment: BaseFragment(R.layout.fragment_post, "Post") {
 
     @BindView(R.id.recycler_view)
     lateinit protected var recyclerView: RecyclerView
@@ -30,8 +29,7 @@ class PostFragment: BaseFragment(R.layout.fragment_post, "Post"), ItemClickListe
     @Inject
     lateinit var viewModel: PostViewModel
 
-    @Inject
-    lateinit var adapter: PostAdapter
+    var adapter: PostAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,18 +44,18 @@ class PostFragment: BaseFragment(R.layout.fragment_post, "Post"), ItemClickListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        setupAdapter(recyclerView)
     }
 
     override fun onStart() {
         super.onStart()
 
         showLoading()
-        viewModel.loadMatches()
+        viewModel.loadPosts()
 
-        viewModel.postResult().observe(this, Observer<MutableList<ListItem>> {
+        viewModel.postResult().observe(this, Observer<MutableList<Post>> {
             Timber.d("Post onChange() ${it?.size}")
-            adapter.refactorItems(it!!)
+            adapter = PostAdapter(activity!! as AppCompatActivity, it!!)
+            recyclerView.adapter = adapter
             hideLoading()
         })
 
@@ -79,11 +77,8 @@ class PostFragment: BaseFragment(R.layout.fragment_post, "Post"), ItemClickListe
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_add -> {
-                val ft = activity!!.getSupportFragmentManager().beginTransaction()
-                ft.replace(R.id.fragment_container, NewPostFragment())
-                ft.addToBackStack(null)
-                ft.commit()
+            R.id.action_search -> {
+                // lets search
                 return false
             }
             else -> {
@@ -93,23 +88,16 @@ class PostFragment: BaseFragment(R.layout.fragment_post, "Post"), ItemClickListe
         return false
     }
 
-    override fun onItemClick(view: View, position: Int, item: Post) {
-        Timber.d("Item clicked")
+    @OnClick(R.id.fab_add)
+    fun onNewClick(view: View) {
+        val ft = activity!!.supportFragmentManager.beginTransaction()
+        ft.replace(R.id.fragment_container, NewPostFragment())
+        ft.addToBackStack(null)
+        ft.commit()
     }
 
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = layoutManager
-    }
-
-    private fun setupAdapter(recyclerView: RecyclerView) {
-        if (recyclerView.adapter !is PostAdapter) {
-            recyclerView.adapter = adapter
-
-            val target = adapter as ClickableItemTarget<Post>
-            target.setOnItemClickListener(this)
-
-            adapter.setup()
-        }
     }
 }

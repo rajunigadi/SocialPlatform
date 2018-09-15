@@ -7,25 +7,23 @@ import android.os.Parcelable
 import com.raju.socialplatform.data.model.base.ListItem
 
 @Entity
-public class Post : Parcelable, ListItem {
+class Comment : Parcelable, ListItem {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+    var postId: Int = 0
     var name: String? = null
     var avatar: String? = null
-    var message: String? = null
-    var description: String? = null
-    var url: String? = null
+    var comment: String? = null
     var modifiedOn: String? = null
 
     constructor() {}
 
     protected constructor(input: Parcel) {
         this.id = input.readInt()
+        this.postId = input.readInt()
         this.name = input.readString()
         this.avatar = input.readString()
-        this.message = input.readString()
-        this.description = input.readString()
-        this.url = input.readString()
+        this.comment = input.readString()
         this.modifiedOn = input.readString()
     }
 
@@ -35,22 +33,21 @@ public class Post : Parcelable, ListItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeInt(this.id)
+        dest.writeInt(this.postId)
         dest.writeString(this.name)
-        dest.writeString(this.avatar)
-        dest.writeString(this.message)
-        dest.writeString(this.description)
-        dest.writeString(this.url)
+        dest.writeString(avatar)
+        dest.writeString(this.comment)
         dest.writeString(modifiedOn)
     }
 
     companion object {
 
-        val CREATOR: Parcelable.Creator<Post> = object : Parcelable.Creator<Post> {
-            override fun createFromParcel(source: Parcel): Post {
-                return Post(source)
+        val CREATOR: Parcelable.Creator<Comment> = object : Parcelable.Creator<Comment> {
+            override fun createFromParcel(source: Parcel): Comment {
+                return Comment(source)
             }
 
-            override fun newArray(size: Int): Array<Post?> {
+            override fun newArray(size: Int): Array<Comment?> {
                 return arrayOfNulls(size)
             }
         }

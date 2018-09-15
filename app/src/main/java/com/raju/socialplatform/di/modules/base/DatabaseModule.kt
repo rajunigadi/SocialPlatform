@@ -3,6 +3,7 @@ package com.raju.socialplatform.di.modules.base
 import android.app.Application
 import android.arch.persistence.room.Room
 import com.raju.socialplatform.data.source.local.SocialDatabase
+import com.raju.socialplatform.data.source.local.dao.CommentDao
 import com.raju.socialplatform.data.source.local.dao.PostDao
 import dagger.Module
 import dagger.Provides
@@ -25,5 +26,11 @@ class DatabaseModule {
     @Provides
     internal fun providesPostDao(database: SocialDatabase): PostDao {
         return database.postDao()
+    }
+
+    @Singleton
+    @Provides
+    internal fun providesCommentDao(database: SocialDatabase): CommentDao {
+        return database.commentDao()
     }
 }
