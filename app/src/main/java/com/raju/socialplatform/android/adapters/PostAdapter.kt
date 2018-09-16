@@ -90,9 +90,9 @@ class PostAdapter(private val activity: AppCompatActivity, private val posts: Mu
                     val filteredList = mutableListOf<Post>()
                     for (row in posts) {
                         if (row is Post) {
-                            val name = row.name
-                            val message = row.message
-                            val description = row.description
+                            val name = row.name?.toLowerCase()
+                            val message = row.message?.toLowerCase()
+                            val description = row.description?.toLowerCase()
                             if (name!!.contains(charString) || message!!.contains(charString) || description!!.contains(charString)) {
                                 filteredList.add(row)
                             }
