@@ -7,8 +7,6 @@ import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import butterknife.BindView
 import butterknife.OnClick
 import com.raju.socialplatform.R
@@ -18,14 +16,13 @@ import com.raju.socialplatform.android.viewmodel.CommentViewModel
 import com.raju.socialplatform.data.model.Comment
 import com.raju.socialplatform.data.model.Post
 import com.raju.socialplatform.utilities.Constants
-import com.raju.socialplatform.utilities.ImageUtil
 import com.raju.socialplatform.utilities.ValidationUtil
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 class PostDetailFragment: BaseFragment(R.layout.fragment_post_detail, "Post Detail") {
 
-    @BindView(R.id.iv_avatar)
+    /*@BindView(R.id.iv_avatar)
     lateinit var ivAvatar: ImageView
 
     @BindView(R.id.tv_name)
@@ -38,7 +35,7 @@ class PostDetailFragment: BaseFragment(R.layout.fragment_post_detail, "Post Deta
     lateinit var tvDescription: TextView
 
     @BindView(R.id.iv_image)
-    lateinit var ivImage: ImageView
+    lateinit var ivImage: ImageView*/
 
     @BindView(R.id.et_comment)
     lateinit var etComment: AppCompatEditText
@@ -63,11 +60,11 @@ class PostDetailFragment: BaseFragment(R.layout.fragment_post_detail, "Post Deta
         val bundle = arguments;
         post = bundle?.getParcelable(Constants.KEY_POST)
 
-        tvName.text = post?.name
+        /*tvName.text = post?.name
         tvMessage.text = post?.message
         tvDescription.text = post?.description
         ImageUtil.loadProfileImage(Constants.PROFILE, ivAvatar)
-        ImageUtil.loadImage(Constants.IMAGE, ivImage)
+        ImageUtil.loadImage(Constants.IMAGE, ivImage)*/
 
         setupRecyclerView()
     }
@@ -125,7 +122,8 @@ class PostDetailFragment: BaseFragment(R.layout.fragment_post_detail, "Post Deta
         viewModel.addCommentResult().observe(this, Observer<Boolean> {
             hideLoading()
             if(it!!) {
-                showSnackBar("Comment added")
+                //showSnackBar("Comment added")
+                etComment.setText("")
                 loadComments()
             } else {
                 showSnackBar("Unable to add comment, try later.")

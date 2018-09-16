@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.raju.socialplatform.R
 import com.raju.socialplatform.android.activities.base.BaseActivity
 import com.raju.socialplatform.android.fragments.PostFragment
-import dagger.android.DaggerApplication
 
 class MainActivity : BaseActivity() {
 

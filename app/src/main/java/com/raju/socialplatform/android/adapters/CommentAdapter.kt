@@ -1,11 +1,11 @@
 package com.raju.socialplatform.android.adapters
 
 import android.support.v7.widget.RecyclerView
-import android.view.ViewGroup
-import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.raju.socialplatform.R

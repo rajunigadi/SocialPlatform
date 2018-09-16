@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.raju.socialplatform.data.model.Post
-import com.raju.socialplatform.data.model.base.ListItem
 import com.raju.socialplatform.data.source.local.dao.PostDao
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

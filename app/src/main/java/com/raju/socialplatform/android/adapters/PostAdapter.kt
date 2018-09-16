@@ -3,21 +3,28 @@ package com.raju.socialplatform.android.adapters
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.view.ViewGroup
-import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.raju.socialplatform.R
-import com.raju.socialplatform.android.fragments.NewPostFragment
 import com.raju.socialplatform.android.fragments.PostDetailFragment
 import com.raju.socialplatform.data.model.Post
 import com.raju.socialplatform.utilities.Constants
 import com.raju.socialplatform.utilities.ImageUtil
 
-class PostAdapter(private val activity: AppCompatActivity, private val posts: MutableList<Post>):RecyclerView.Adapter<PostAdapter.MyViewHolder>() {
+class PostAdapter(private val activity: AppCompatActivity, private val posts: MutableList<Post>):RecyclerView.Adapter<PostAdapter.MyViewHolder>(),
+        Filterable {
+
+    var filteredData = mutableListOf<Post>()
+    init {
+        filteredData = posts;
+    }
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -50,7 +57,7 @@ class PostAdapter(private val activity: AppCompatActivity, private val posts: Mu
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val post = posts[position]
+        val post = filteredData[position]
         holder.tvName.text = post.name
         holder.tvMessage.text = post.message
         holder.tvDescription.text = post.description
@@ -70,6 +77,40 @@ class PostAdapter(private val activity: AppCompatActivity, private val posts: Mu
     }
 
     override fun getItemCount(): Int {
-        return posts.size
+        return filteredData.size
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            protected override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val charString = charSequence.toString().toLowerCase()
+                if (charString.isEmpty()) {
+                    filteredData = posts
+                } else {
+                    val filteredList = mutableListOf<Post>()
+                    for (row in posts) {
+                        if (row is Post) {
+                            val name = row.name
+                            val message = row.message
+                            val description = row.description
+                            if (name!!.contains(charString) || message!!.contains(charString) || description!!.contains(charString)) {
+                                filteredList.add(row)
+                            }
+                        }
+                    }
+
+                    filteredData = filteredList
+                }
+
+                val filterResults = FilterResults()
+                filterResults.values = filteredData
+                return filterResults
+            }
+
+            protected override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+                filteredData = filterResults.values as MutableList<Post>
+                notifyDataSetChanged()
+            }
+        }
     }
 }

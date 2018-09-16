@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -20,6 +21,7 @@ import com.raju.socialplatform.data.model.Post
 import dagger.android.support.AndroidSupportInjection
 import timber.log.Timber
 import javax.inject.Inject
+
 
 class PostFragment: BaseFragment(R.layout.fragment_post, "Post") {
 
@@ -78,7 +80,8 @@ class PostFragment: BaseFragment(R.layout.fragment_post, "Post") {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-                // lets search
+                val searchView = item.actionView as SearchView
+                search(searchView)
                 return false
             }
             else -> {
@@ -99,5 +102,20 @@ class PostFragment: BaseFragment(R.layout.fragment_post, "Post") {
     private fun setupRecyclerView() {
         val layoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = layoutManager
+    }
+
+    private fun search(searchView: SearchView?) {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (adapter != null && adapter!!.getItemCount() > 0) {
+                    adapter!!.getFilter().filter(newText)
+                }
+                return true
+            }
+        })
     }
 }

@@ -3,4 +3,5 @@
     <string name="post">Post</string>
     <string name="message">Enter message</string>
     <string name="enter_description">Enter description</string>
+    <string name="enter_comment">Enter comment</string>
 </resources>
